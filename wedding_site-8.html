@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Casamento Paloma & Marcelo</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html, body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: #111;
+  }
+
+  #screen1 {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+    background: #111;
+  }
+
+  #screen1 img {
+    height: 100vh;
+    max-width: 100%;
+    object-fit: contain;
+    display: block;
+  }
+
+  #sealBtn {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 140px;
+    height: 150px;
+    border-radius: 50%;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    z-index: 101;
+  }
+
+  #sealBtn::after {
+    content: '';
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 110px; height: 110px;
+    border-radius: 50%;
+    border: 2px solid rgba(74,111,165,0.5);
+    animation: ring 2s ease-out infinite;
+  }
+
+  @keyframes ring {
+    0%   { transform: translate(-50%,-50%) scale(0.85); opacity: 0.9; }
+    100% { transform: translate(-50%,-50%) scale(1.6);  opacity: 0; }
+  }
+
+  #screen2 {
+    display: none;
+    width: 100%;
+    min-height: 100vh;
+    overflow-y: auto;
+    justify-content: center;
+    background: #111;
+  }
+
+  #screen2.visible {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .page {
+    width: 100%;
+    max-width: 430px;
+    position: relative;
+  }
+
+  .page img {
+    width: 100%;
+    display: block;
+  }
+
+  /* Contagem regressiva */
+  .countdown-wrap {
+    width: 100%;
+    max-width: 430px;
+    background: #f5ede3;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 16px 0 22px;
+  }
+
+  .cd-title {
+    font-family: 'Georgia', serif;
+    font-size: 0.6rem;
+    letter-spacing: 0.25em;
+    color: #4a7499;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+
+  .countdown-box {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .cd-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .cd-square {
+    width: 62px;
+    height: 62px;
+    background: rgba(42,82,152,0.08);
+    border: 1px solid rgba(42,82,152,0.2);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .cd-num {
+    font-family: 'Georgia', serif;
+    font-size: 1.7rem;
+    font-weight: bold;
+    color: #2a5298;
+    line-height: 1;
+  }
+
+  .cd-label {
+    font-family: 'Georgia', serif;
+    font-size: 0.5rem;
+    color: #4a7499;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .cd-sep {
+    font-size: 1.4rem;
+    color: rgba(42,82,152,0.3);
+    margin-top: 16px;
+    line-height: 1;
+  }
+
+  /* Ícones página 3 */
+  .icon-area {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 65%;
+    z-index: 10;
+  }
+
+  .icon-area a {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+</style>
+</head>
+<body>
+
+  <!-- TELA 1: ENVELOPE -->
+  <div id="screen1">
+    <img src="https://raw.githubusercontent.com/convitedigitaldeluxo-byte/palomaemarcelo/main/1.png" alt="Convite">
+    <button id="sealBtn" onclick="openInvite()"></button>
+  </div>
+
+  <!-- TELA 2 -->
+  <div id="screen2">
+
+    <!-- PAGE 2: CASAL -->
+    <div class="page">
+      <img src="https://raw.githubusercontent.com/convitedigitaldeluxo-byte/palomaemarcelo/main/2.png?v=5" alt="Paloma e Marcelo">
+    </div>
+
+    <!-- CONTAGEM REGRESSIVA -->
+    <div class="countdown-wrap">
+      <p class="cd-title">Faltam para o grande dia</p>
+      <div class="countdown-box">
+        <div class="cd-item">
+          <div class="cd-square"><span class="cd-num" id="cd-days">--</span></div>
+          <span class="cd-label">dias</span>
+        </div>
+        <span class="cd-sep">:</span>
+        <div class="cd-item">
+          <div class="cd-square"><span class="cd-num" id="cd-hours">--</span></div>
+          <span class="cd-label">horas</span>
+        </div>
+        <span class="cd-sep">:</span>
+        <div class="cd-item">
+          <div class="cd-square"><span class="cd-num" id="cd-mins">--</span></div>
+          <span class="cd-label">minutos</span>
+        </div>
+        <span class="cd-sep">:</span>
+        <div class="cd-item">
+          <div class="cd-square"><span class="cd-num" id="cd-secs">--</span></div>
+          <span class="cd-label">segundos</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- PAGE 3: ICONS -->
+    <div class="page" style="position:relative;">
+      <img src="https://raw.githubusercontent.com/convitedigitaldeluxo-byte/palomaemarcelo/main/3.png?v=2" alt="Interações">
+
+      <div class="icon-area" style="top:22%;height:20%;">
+        <a href="https://docs.google.com/forms/d/e/1FAIpQLScdOJrUOy95Lx-bMZjUXx8t9zODg_nHzdYmaR8WuKPp8uRUGA/viewform" target="_blank"></a>
+      </div>
+      <div class="icon-area" style="top:47%;height:18%;">
+        <a href="https://noivos.casar.com/paloma-e-marcelo-2026-09-19/#/one-page/_start" target="_blank"></a>
+      </div>
+      <div class="icon-area" style="top:70%;height:18%;">
+        <a href="https://www.google.com/maps/search/Paróquia+Santo+Antônio+Praça+Cel.+Joaquim+Etsanislau+198+Sorocaba+SP" target="_blank"></a>
+      </div>
+    </div>
+
+  </div>
+
+<script>
+  function openInvite() {
+    document.getElementById('screen1').style.display = 'none';
+    document.documentElement.style.overflow = 'auto';
+    document.body.style.overflow = 'auto';
+    document.body.style.height = 'auto';
+    var s2 = document.getElementById('screen2');
+    s2.classList.add('visible');
+    window.scrollTo(0, 0);
+  }
+
+  // Contagem regressiva para 19/09/2026 às 15:00 (Sorocaba - BRT UTC-3)
+  var wedding = new Date('2026-09-19T15:00:00-03:00');
+
+  function updateCountdown() {
+    var now = new Date();
+    var diff = wedding - now;
+    if (diff <= 0) {
+      document.getElementById('cd-days').textContent = '🎉';
+      document.getElementById('cd-hours').textContent = '🎉';
+      document.getElementById('cd-mins').textContent = '🎉';
+      document.getElementById('cd-secs').textContent = '🎉';
+      return;
+    }
+    var days  = Math.floor(diff / (1000*60*60*24));
+    var hours = Math.floor((diff % (1000*60*60*24)) / (1000*60*60));
+    var mins  = Math.floor((diff % (1000*60*60)) / (1000*60));
+    var secs  = Math.floor((diff % (1000*60)) / 1000);
+
+    document.getElementById('cd-days').textContent  = String(days).padStart(2,'0');
+    document.getElementById('cd-hours').textContent = String(hours).padStart(2,'0');
+    document.getElementById('cd-mins').textContent  = String(mins).padStart(2,'0');
+    document.getElementById('cd-secs').textContent  = String(secs).padStart(2,'0');
+  }
+
+  updateCountdown();
+  setInterval(updateCountdown, 1000);
+</script>
+</body>
+</html>
